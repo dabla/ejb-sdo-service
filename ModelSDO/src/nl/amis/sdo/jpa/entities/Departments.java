@@ -113,7 +113,8 @@ public class Departments implements Serializable {
           departmentsSDO.setEmployeesList(employeesList);
       }
       departmentsSDO.setLocationId(getLocationId());
-      departmentsSDO.setManager(getManager().toEmployeesSDO());
+      if (getManager() != null)
+        departmentsSDO.setManager(getManager().toEmployeesSDO());
       return departmentsSDO;
     }
 }
