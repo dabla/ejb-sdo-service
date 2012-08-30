@@ -90,6 +90,19 @@ public class EmployeesSDOImpl extends SDODataObject implements EmployeesSDO {
       set(START_PROPERTY_INDEX + 9 , value);
    }
 
-
+   public Employees toEmployees() {
+     final Employees employees = new Employees();
+     employees.setCommissionPct(getCommissionPct());
+     employees.setEmail(getEmail());
+     employees.setEmployeeId(getEmployeeId());
+     employees.setFirstName(getFirstName());
+     employees.setHireDate(getHireDate());
+     employees.setJobId(getJobId());
+     employees.setLastName(getLastName());
+     employees.setManagerId(getManagerId());
+     employees.setPhoneNumber(getPhoneNumber());
+     employees.setSalary(getSalary());
+     return employees;
+   }
 }
 

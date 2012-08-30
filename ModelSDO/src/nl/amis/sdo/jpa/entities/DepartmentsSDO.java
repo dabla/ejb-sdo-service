@@ -22,6 +22,6 @@ public interface DepartmentsSDO {
 
    public void setManager(nl.amis.sdo.jpa.entities.EmployeesSDO value);
 
-
+   public Departments toDepartments();
 }
 

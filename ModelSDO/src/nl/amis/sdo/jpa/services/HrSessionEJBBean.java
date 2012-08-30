@@ -105,107 +105,23 @@ public class HrSessionEJBBean implements HrSessionEJB {
         return em.createNamedQuery("Employees.findOne").setParameter("empId", empId).getResultList();
     }
 
-
-    private Employees unMarshallEmployees(EmployeesSDO employeesSDO) {
-        if (employeesSDO == null)
-            return null;
-        Employees employees = new Employees();
-        employees.setCommissionPct(employeesSDO.getCommissionPct());
-        employees.setEmail(employeesSDO.getEmail());
-        employees.setEmployeeId(employeesSDO.getEmployeeId());
-        employees.setFirstName(employeesSDO.getFirstName());
-        employees.setHireDate(employeesSDO.getHireDate());
-        employees.setJobId(employeesSDO.getJobId());
-        employees.setLastName(employeesSDO.getLastName());
-        employees.setManagerId(employeesSDO.getManagerId());
-        employees.setPhoneNumber(employeesSDO.getPhoneNumber());
-        employees.setSalary(employeesSDO.getSalary());
-        return employees;
-    }
-
-    private Departments unMarshallDepartments(DepartmentsSDO departmentsSDO) {
-        if (departmentsSDO == null)
-            return null;
-        Departments departments = new Departments();
-        departments.setDepartmentId(departmentsSDO.getDepartmentId());
-        departments.setDepartmentName(departmentsSDO.getDepartmentName());
-        final List<EmployeesSDO> employeesListSDO = departmentsSDO.getEmployeesList();
-        if (employeesListSDO != null) {
-            final List<Employees> employeesList = new ArrayList<Employees>(employeesListSDO.size());
-            for (EmployeesSDO employeesSDOForLoop : employeesListSDO) {
-                employeesList.add(unMarshallEmployees(employeesSDOForLoop));
-            }
-            departments.setEmployeesList(employeesList);
-        }
-        departments.setLocationId(departmentsSDO.getLocationId());
-        departments.setManager(unMarshallEmployees(departmentsSDO.getManager()));
-        return departments;
-    }
-
-    private DepartmentsSDO marshallDepartments(Departments departments) {
-        if (departments == null)
-            return null;
-        DepartmentsSDO departmentsSDO = ( DepartmentsSDO )DataFactory.INSTANCE.create(DepartmentsSDO.class);
-        departmentsSDO.setDepartmentId(departments.getDepartmentId());
-        departmentsSDO.setDepartmentName(departments.getDepartmentName());
-        final List<Employees> employeesList = departments.getEmployeesList();
-        if (employeesList != null) {
-            final List<EmployeesSDO> employeesListSDO = new ArrayList<EmployeesSDO>(employeesList.size());
-            for (Employees employeesForLoop : employeesList) {
-                employeesListSDO.add(marshallEmployees(employeesForLoop));
-            }
-            departmentsSDO.setEmployeesList(employeesListSDO);
-        }
-        departmentsSDO.setLocationId(departments.getLocationId());
-        departmentsSDO.setManager(marshallEmployees(departments.getManager()));
-        return departmentsSDO;
-    }
-
-    private EmployeesSDO marshallEmployees(Employees employees) {
-        if (employees == null)
-            return null;
-        EmployeesSDO employeesSDO = ( EmployeesSDO )DataFactory.INSTANCE.create(EmployeesSDO.class);
-        
-        if (employees.getCommissionPct() != null )
-          employeesSDO.setCommissionPct(employees.getCommissionPct());
-
-        employeesSDO.setEmail(employees.getEmail());
-        employeesSDO.setEmployeeId(employees.getEmployeeId());
-        employeesSDO.setFirstName(employees.getFirstName());
-        employeesSDO.setHireDate(employees.getHireDate());
-        employeesSDO.setJobId(employees.getJobId());
-        employeesSDO.setLastName(employees.getLastName());
-
-        if (employees.getManagerId() != null )
-          employeesSDO.setManagerId(employees.getManagerId());
-
-        employeesSDO.setPhoneNumber(employees.getPhoneNumber());
-        employeesSDO.setSalary(employees.getSalary());
-        return employeesSDO;
-    }
-
-
-
     public DepartmentsSDO persistDepartmentsSDO(DepartmentsSDO departmentsSDO) throws RuntimeException {
-        Departments departments = unMarshallDepartments(departmentsSDO);
-        return marshallDepartments(persistDepartments(departments));
+        return persistDepartments(departmentsSDO.toDepartments()).toDepartmentsSDO();
     }
 
     public DepartmentsSDO mergeDepartmentsSDO(DepartmentsSDO departmentsSDO) throws RuntimeException {
-        Departments departments = unMarshallDepartments(departmentsSDO);
-        return marshallDepartments(mergeDepartments(departments));
+        return mergeDepartments(departmentsSDO.toDepartments()).toDepartmentsSDO();
     }
 
     public void removeDepartmentsSDO(DepartmentsSDO departmentsSDO) throws RuntimeException {
-        Departments departments = unMarshallDepartments(departmentsSDO);
-        removeDepartments(departments);
+        removeDepartments(departmentsSDO.toDepartments());
     }
 
     public List<DepartmentsSDO> getDepartmentsFindAllSDO() throws RuntimeException {
         List<Departments> departments = getDepartmentsFindAll();
         List<DepartmentsSDO> departmentsSDO = new ArrayList<DepartmentsSDO>(departments.size());
         for (Departments departments1 : departments) {
-            departmentsSDO.add(marshallDepartments(departments1));
+            departmentsSDO.add(departments1.toDepartmentsSDO());
         }
         return departmentsSDO;
     }
@@ -214,31 +130,28 @@ public class HrSessionEJBBean implements HrSessionEJB {
         List<Departments> departments = getDepartmentsFindOne(deptId);
         List<DepartmentsSDO> departmentsSDO = new ArrayList<DepartmentsSDO>(departments.size());
         for (Departments departments1 : departments) {
-            departmentsSDO.add(marshallDepartments(departments1));
+            departmentsSDO.add(departments1.toDepartmentsSDO());
         }
         return departmentsSDO;
     }
 
     public EmployeesSDO persistEmployeesSDO(EmployeesSDO employeesSDO) throws RuntimeException {
-        Employees employees = unMarshallEmployees(employeesSDO);
-        return marshallEmployees(persistEmployees(employees));
+        return persistEmployees(employeesSDO.toEmployees()).toEmployeesSDO();
     }
 
     public EmployeesSDO mergeEmployeesSDO(EmployeesSDO employeesSDO) throws RuntimeException {
-        Employees employees = unMarshallEmployees(employeesSDO);
-        return marshallEmployees(mergeEmployees(employees));
+        return mergeEmployees(employeesSDO.toEmployees()).toEmployeesSDO();
     }
 
     public void removeEmployeesSDO(EmployeesSDO employeesSDO) throws RuntimeException {
-        Employees employees = unMarshallEmployees(employeesSDO);
-        removeEmployees(employees);
+        removeEmployees(employeesSDO.toEmployees());
     }
 
     public List<EmployeesSDO> getEmployeesFindAllSDO() throws RuntimeException {
         List<Employees> employees = getEmployeesFindAll();
         List<EmployeesSDO> employeesSDO = new ArrayList<EmployeesSDO>(employees.size());
         for (Employees employees1 : employees) {
-            employeesSDO.add(marshallEmployees(employees1));
+            employeesSDO.add(employees1.toEmployeesSDO());
         }
         return employeesSDO;
     }
@@ -247,7 +160,7 @@ public class HrSessionEJBBean implements HrSessionEJB {
         List<Employees> employees = getEmployeesFindOne(empId);
         List<EmployeesSDO> employeesSDO = new ArrayList<EmployeesSDO>(employees.size());
         for (Employees employees1 : employees) {
-            employeesSDO.add(marshallEmployees(employees1));
+            employeesSDO.add(employees1.toEmployeesSDO());
         }
         return employeesSDO;
     }

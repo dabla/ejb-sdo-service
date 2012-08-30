@@ -42,6 +42,6 @@ public interface EmployeesSDO {
 
    public void setSalary(double value);
 
-
+  public Employees toEmployees();
 }
 

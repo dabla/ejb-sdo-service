@@ -1,7 +1,10 @@
 package nl.amis.sdo.jpa.entities;
 
+import commonj.sdo.helper.DataFactory;
+
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -96,5 +99,21 @@ public class Departments implements Serializable {
 
     public Employees getManager() {
         return manager;
+    }
+    
+    public DepartmentsSDO toDepartmentsSDO() {
+      final DepartmentsSDO departmentsSDO = ( DepartmentsSDO )DataFactory.INSTANCE.create(DepartmentsSDO.class);
+      departmentsSDO.setDepartmentId(getDepartmentId());
+      departmentsSDO.setDepartmentName(getDepartmentName());
+      if (getEmployeesList() != null) {
+          final List<EmployeesSDO> employeesList = new ArrayList<EmployeesSDO>(getEmployeesList().size());
+          for (final Employees employee : getEmployeesList()) {
+              employeesList.add(employee.toEmployeesSDO());
+          }
+          departmentsSDO.setEmployeesList(employeesList);
+      }
+      departmentsSDO.setLocationId(getLocationId());
+      departmentsSDO.setManager(getManager().toEmployeesSDO());
+      return departmentsSDO;
     }
 }

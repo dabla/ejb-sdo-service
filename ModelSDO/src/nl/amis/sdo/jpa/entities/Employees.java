@@ -1,5 +1,7 @@
 package nl.amis.sdo.jpa.entities;
 
+import commonj.sdo.helper.DataFactory;
+
 import java.io.Serializable;
 
 import java.util.Date;
@@ -151,5 +153,26 @@ public class Employees implements Serializable {
 
     public Date getHireDate() {
         return hireDate;
+    }
+    
+    public EmployeesSDO toEmployeesSDO() {
+          final EmployeesSDO employeesSDO = ( EmployeesSDO )DataFactory.INSTANCE.create(EmployeesSDO.class);
+          
+          if (getCommissionPct() != null )
+            employeesSDO.setCommissionPct(getCommissionPct());
+
+          employeesSDO.setEmail(getEmail());
+          employeesSDO.setEmployeeId(getEmployeeId());
+          employeesSDO.setFirstName(getFirstName());
+          employeesSDO.setHireDate(getHireDate());
+          employeesSDO.setJobId(getJobId());
+          employeesSDO.setLastName(getLastName());
+
+          if (getManagerId() != null )
+            employeesSDO.setManagerId(getManagerId());
+
+          employeesSDO.setPhoneNumber(getPhoneNumber());
+          employeesSDO.setSalary(getSalary());
+          return employeesSDO;
     }
 }

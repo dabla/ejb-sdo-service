@@ -1,5 +1,8 @@
 package nl.amis.sdo.jpa.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.persistence.sdo.SDODataObject;
 
 public class DepartmentsSDOImpl extends SDODataObject implements DepartmentsSDO {
@@ -50,6 +53,20 @@ public class DepartmentsSDOImpl extends SDODataObject implements DepartmentsSDO 
       set(START_PROPERTY_INDEX + 4 , value);
    }
 
-
+   public Departments toDepartments() {
+     final Departments departments = new Departments();
+     departments.setDepartmentId(getDepartmentId());
+     departments.setDepartmentName(getDepartmentName());
+     if (getEmployeesList() != null) {
+         final List<Employees> employeesList = new ArrayList<Employees>(getEmployeesList().size());
+         for (final EmployeesSDO employee : (List<EmployeesSDO>)getEmployeesList()) {
+             employeesList.add(employee.toEmployees());
+         }
+         departments.setEmployeesList(employeesList);
+     }
+     departments.setLocationId(getLocationId());
+     departments.setManager(getManager().toEmployees());
+     return departments;
+   }
 }
 
