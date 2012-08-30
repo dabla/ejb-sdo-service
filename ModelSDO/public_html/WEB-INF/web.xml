@@ -1,0 +1,59 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+     version="2.5">
+    <!-- https://forums.oracle.com/forums/thread.jspa?threadID=987232 -->
+    <servlet>
+        <display-name>nl.amis.sdo.jpa.services.HrSessionEJBBeanWSForward</display-name>
+        <servlet-name>nl.amis.sdo.jpa.services.HrSessionEJBBeanWSForward</servlet-name><!-- name of the servlet mapping to HrSessionEJBBean WebService -->
+        <servlet-class>oracle.j2ee.ws.server.WSForwardServlet</servlet-class>
+        <init-param>
+            <param-name>to</param-name>
+            <param-value>/HrSessionEJBBeanWS</param-value><!-- servlet path mapping to HrSessionEJBBean WebService -->
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>nl.amis.sdo.jpa.services.HrSessionEJBBean</servlet-name><!-- name of the servlet mapping to HrSessionEJBBean WebService -->
+        <servlet-class>oracle.j2ee.ws.server.provider.ProviderServlet</servlet-class>
+        <init-param>
+            <param-name>Oracle.JAX-WS.EjbLink</param-name>
+            <param-value>ejb/HrSessionEJB</param-value><!-- link to the ejb HrSessionEJB -->
+        </init-param>
+        <init-param>
+            <param-name>Oracle.JAX-WS.ServiceEndpointBean</param-name>
+            <param-value>nl.amis.sdo.jpa.services.HrSessionEJBBean</param-value><!-- fully qualified Java name of the HrSessionEJB implementation -->
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>nl.amis.sdo.jpa.services.HrSessionEJBBean</servlet-name>
+        <url-pattern>/HrSessionEJBBeanWS</url-pattern><!-- servlet path mapping to HrSessionEJBBean WebService -->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>nl.amis.sdo.jpa.services.HrSessionEJBBeanWSForward</servlet-name>
+        <url-pattern>/HrSessionEJBBeanWS/secure</url-pattern><!-- secured servlet path mapping to HrSessionEJBBean WebService -->
+    </servlet-mapping>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+    <security-role>
+        <role-name>Admin</role-name>
+    </security-role>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>nl.amis.sdo.jpa.services.HrSessionEJBBeanWS</web-resource-name>
+            <url-pattern>/HrSessionEJBBeanWS/secure</url-pattern><!-- secured servlet path mapping to HrSessionEJBBean WebService -->
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <ejb-ref><!-- define EJB reference in WAR for use above in ProviderServlet definition -->
+        <ejb-ref-name>ejb/HrSessionEJB</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <remote>nl.amis.sdo.jpa.services.HrSessionEJB</remote>
+        <ejb-link>HrSessionEJB</ejb-link>
+    </ejb-ref>
+</web-app>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oracle-webservices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:noNamespaceSchemaLocation="http://xmlns.oracle.com/oracleas/schema/11/oracle-webservices-11_1.xsd"
+                    schema-major-version="11" schema-minor-version="1">
+  <context-root>EjbSdoService-ModelSDO-context-root</context-root><!-- context root of the WAR -->
+  <webservice-description name="{/nl.amis.sdo.jpa.services/}HrSessionEJBBeanWS"><!-- fully qualified WebService name -->
+    <expose-wsdl>true</expose-wsdl>
+    <expose-testpage>true</expose-testpage>
+    <schema-file-mappings>
+      <schema-file-mapping advertisedName="/nl/amis/sdo/jpa/entities/EmployeesSDO.xsd"
+                           path="/nl/amis/sdo/jpa/entities/EmployeesSDO.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the xsd defintion (mind entities) -->
+      <schema-file-mapping advertisedName="/nl/amis/sdo/jpa/entities/DepartmentsSDO.xsd"
+                           path="/nl/amis/sdo/jpa/entities/DepartmentsSDO.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the xsd defintion (mind entities) -->
+      <schema-file-mapping advertisedName="/nl/amis/sdo/jpa/services/HrSessionEJBBeanWS.xsd"
+                           path="/nl/amis/sdo/jpa/services/HrSessionEJBBeanWS.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the xsd defintion (mind services) -->
+      <schema-file-mapping advertisedName="/xml/datagraph.xsd"
+                           path="/xml/datagraph.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the commonj SDO xsd defintions -->
+      <schema-file-mapping advertisedName="/xml/sdoModel.xsd"
+                           path="/xml/sdoModel.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the commonj SDO xsd defintions -->
+      <schema-file-mapping advertisedName="/xml/sdoJava.xsd"
+                           path="/xml/sdoJava.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the commonj SDO xsd defintions -->
+      <schema-file-mapping advertisedName="/xml/sdoXML.xsd"
+                           path="/xml/sdoXML.xsd"/><!-- full path (starting form WEB-INF/wsdl) to the commonj SDO xsd defintions -->
+    </schema-file-mappings>
+    <port-component name="HrSessionEJBBeanWS" enabled="true"
+                    schemaValidateInput="false">
+      <mtom-support threshold="0">false</mtom-support>
+      <endpoint-address-uri>/HrSessionEJBBeanWS</endpoint-address-uri><!-- servlet path mapping to HrSessionEJBBean WebService -->
+    </port-component>
+    <enable-mex>true</enable-mex>
+  </webservice-description>
+</oracle-webservices>

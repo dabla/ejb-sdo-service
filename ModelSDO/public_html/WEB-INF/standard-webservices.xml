@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webservices xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/javaee_web_services_1_2.xsd" version="1.2">
+  <webservice-description>
+    <webservice-description-name>{/nl.amis.sdo.jpa.services/}HrSessionEJBBeanWS</webservice-description-name><!-- fully qualified WebService name -->
+    <wsdl-file>WEB-INF/wsdl/nl/amis/sdo/jpa/services/HrSessionEJBBeanWS.wsdl</wsdl-file><!-- location of the WSDL file in our WAR project -->
+    <jaxrpc-mapping-file/>
+    <port-component>
+      <port-component-name>HrSessionEJBBeanWS</port-component-name><!-- corresponds to the name defintion found in HrSessionEJBBeanWS.wsdl --> 
+      <wsdl-service xmlns:ns0="/nl.amis.sdo.jpa.services/">ns0:HrSessionEJBBeanWS</wsdl-service><!-- namespace ns0 corresponds to the targetNamespace defintion found in HrSessionEJBBeanWS.wsdl --> 
+      <wsdl-port xmlns:ns1="/nl.amis.sdo.jpa.services/">ns1:HrSessionEJBBeanWSSoapHttpPort</wsdl-port><!-- namespace ns1 corresponds to the targetNamespace defintion found in HrSessionEJBBeanWS.wsdl --> 
+      <enable-mtom>false</enable-mtom>
+      <service-endpoint-interface>nl.amis.sdo.jpa.services.HrSessionEJB</service-endpoint-interface><!-- corresponds to the Java remote EJB interface -->
+      <service-impl-bean>
+        <servlet-link>nl.amis.sdo.jpa.services.HrSessionEJBBean</servlet-link><!-- corresponds to the Java EJB implementation name -->
+      </service-impl-bean>
+    </port-component>
+  </webservice-description>
+</webservices>

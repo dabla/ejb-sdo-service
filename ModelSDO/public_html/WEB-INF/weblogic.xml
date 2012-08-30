@@ -1,0 +1,7 @@
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.bea.com/ns/weblogic/90">
+    <security-role-assignment>
+        <role-name>Admin</role-name>
+        <principal-name>users</principal-name>
+    </security-role-assignment>
+</weblogic-web-app>
